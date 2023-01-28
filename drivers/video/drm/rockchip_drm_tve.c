@@ -210,7 +210,7 @@ static int rockchip_drm_tve_init(struct display_state *state)
 	struct connector_state *conn_state = &state->conn_state;
 	int node = 0;
 	int dac_value, getvdac;
-	fdt_addr_t addr;
+//	fdt_addr_t addr;
 
 	conn_state->type = DRM_MODE_CONNECTOR_TV;
 	tve_s.grf = syscon_get_first_range(ROCKCHIP_SYSCON_GRF);

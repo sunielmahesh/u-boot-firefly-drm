@@ -20,6 +20,17 @@
 		u-boot,spl-boot-order = &sdmmc, &sdhci;
 	};
 
+	reserved-memory {
+                #address-cells = <2>;
+                #size-cells = <2>;
+                ranges;
+
+                drm_logo: drm-logo@00000000 {
+                        compatible = "rockchip,drm-logo";
+                        reg = <0x0 0x0 0x0 0x0>;
+                };
+        };
+
 	backlight: backlight {
 		//status="disabled";
 		compatible = "pwm-backlight";
@@ -649,16 +660,12 @@
 
 };
 
-&route_hdmi {
-	status = "okay";
-};
-
 &vopb {
 	status = "okay";
 };
 
 &vopl {
-	status = "disabled";
+	status = "okay";
 };
 
 &hdmi_in_vopb {
@@ -666,10 +673,13 @@
 };
 
 &hdmi_in_vopl {
-	status = "disabled";
+	status = "okay";
 };
 
 &hdmi {
+	ddc-i2c-bus = <&i2c3>;
+        pinctrl-names = "default";
+        pinctrl-0 = <&hdmi_cec>;
 	status = "okay";
 };
 
@@ -693,4 +703,19 @@
 
 &usb_host1_ohci {
 	status = "okay";
+};
+
+&display_subsystem {
+        logo-memory-region = <&drm_logo>;
+        status = "okay";
+        route {
+                route_hdmi: route-hdmi {
+                        status = "okay";
+                        logo,uboot = "logo.bmp";
+                        logo,kernel = "logo_kernel.bmp";
+                        logo,mode = "center";
+                        charge_logo,mode = "center";
+                        connect = <&vopb_out_hdmi>;
+                };
+        };
 };
